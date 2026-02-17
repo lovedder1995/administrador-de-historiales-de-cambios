@@ -99,6 +99,14 @@ import { join } from "node:path"
 
         /* Habiendo actualizado el manifiesto, lo agregamos a los cambios revisados. */ ejecutar("git", ["add", "package.json"]) }
 
+    /* Si hay */ const ruta_portada = join(process.cwd(), "PORTADA.md")
+    /* una portada, */ if (existsSync(ruta_portada)) {
+        /* le actualizamos todas las */const portada = readFileSync(ruta_portada, "utf8")
+        /* referencias a la revisión */ const readme = portada.split("$revisión").join(revisión)
+        /* y guardamos los cambios. */ writeFileSync(join(process.cwd(), "README.md"), readme, "utf8")
+
+        /* Habiendo actualizado la portada, la agregamos a los cambios revisados. */ ejecutar("git", ["add", "README.md"]) }
+
     /* Teniendo ya la fecha y número de esta nueva revisión, le pedimos a Git que la guarde. */const git = ejecutar("git", ["commit", "-m", revisión])
 
     /* El mensaje que nos devuelva Git */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
