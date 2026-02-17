@@ -1,0 +1,28 @@
+{
+    "better-comments.tags": [
+        {
+            "tag": "=",
+            "color": "#4EC9B0",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#4EC9B022",
+            "bold": true
+        },
+        {
+            "tag": "-",
+            "color": "#CE9178",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#CE917822",
+            "bold": true
+        },
+        {
+            "tag": "[",
+            "color": "#C586C0",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "#C586C022",
+            "bold": true
+        }
+    ]
+}
