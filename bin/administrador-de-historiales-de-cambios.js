@@ -27,6 +27,7 @@ import prompts from "prompts"
 /* Podemos elegir entre */ let opciones_elegidas = process.argv.slice(2)
 /* las siguientes opciones: */const opciones_disponibles = {
     "lista-de-cambios": "git status",
+    "confirmar-la-revisión-de-todos-los-cambios": "git add .",
     "guardar-revisión": "git commit -m <REVISIÓN>",
     "enviar-revisiones-al-servidor": "git push -u origin main",
     "crear-un-historial": "git init" }
@@ -72,6 +73,13 @@ import prompts from "prompts"
         "Untracked files:", "Cambios sin revisar:")
 
     /* Estando traducida, la mostramos. */ process.stdout.write(texto); process.exit(git.status ?? 0)
+/*
+[ Confirmar la revisión de todos los cambios ]
+*/
+/* Si queremos confirmar la revisión de todos los cambios, */ } else if (opciones_elegidas.includes("--confirmar-la-revisión-de-todos-los-cambios")) {
+    /* se lo pedimos a Git. */ const git = ejecutar("git", ["add", "."])
+    /* El mensaje que nos devuelva Git */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
+    /* lo mostramos tal cual como Git nos lo da. */ process.stdout.write(texto); process.exit(git.status ?? 0)
 /*
 [ Guardar revisión ]
 */
