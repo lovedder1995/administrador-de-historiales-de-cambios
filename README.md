@@ -5,5 +5,5 @@ Un historial de cambios es una abstracción semántica de Git.
 # Instalación
 
 ```bash
-npm install --save-dev github:lovedder1995/administrador-de-historiales-de-cambios#2026.2.17-5
+npm install --save-dev github:lovedder1995/administrador-de-historiales-de-cambios#2026.2.17-6
 ```
