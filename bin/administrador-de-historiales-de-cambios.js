@@ -2,10 +2,12 @@
 import { spawnSync as ejecutar } from "child_process"
 import { readFileSync, writeFileSync, existsSync } from "node:fs"
 import { join } from "node:path"
+import prompts from "prompts"
 /*
 =========================================
 = Administrador de historial de cambios =
 =========================================
+*/
 /*
 --------------------------------------------------------------
 - Verificar que exista un historial de cambios en la carpeta -
@@ -22,21 +24,29 @@ import { join } from "node:path"
 - Opciones -
 ------------
 */
-/* Podemos elegir entre */ const opciones_elegidas = process.argv.slice(2)
+/* Podemos elegir entre */ let opciones_elegidas = process.argv.slice(2)
 /* las siguientes opciones: */const opciones_disponibles = {
-    "crear-un-historial": "git init",
     "lista-de-cambios": "git status",
-    "guardar-revisión": "git commit -m \"{fecha compatible con el formato semver}\"" }
+    "guardar-revisión": "git commit -m <REVISIÓN>",
+    "enviar-revisiones-al-servidor": "git push -u origin main",
+    "crear-un-historial": "git init" }
 
 /* Si no se elige ninguna, */ if (opciones_elegidas.length === 0) {
-    /* mostramos */ console.log("Opciones:")
-    /* todas las */ for (const [opción, descripción] of Object.entries(opciones_disponibles)) {
-        /* opciones disponibles */ console.log(`  --${opción
-            /* asegurando que estén alineadas visualmente */ .padEnd(Math.max(...Object.keys(opciones_disponibles).map(opción => opción.length)))
-        /* todas las descripciones. */ }  ${descripción}`) } process.exit(0) }
+    /* vamos a mostrar */ const opciones_para_menu = Object.entries(opciones_disponibles).map(([opción, descripción]) => ({
+        /* un menú */ title: `${opción.padEnd(Math.max(...Object.keys(opciones_disponibles).map(opción => opción.length)))}  ${descripción}`,
+        /* interactivo. */ value: opción } ) )
 
-/* Si se elige una */ if (!Object.keys(opciones_disponibles)
-    /* que no está entre las disponibles, */ .includes(opciones_elegidas[0].substring(2))) {
+    /* El menú */ const respuesta = await prompts({
+        /* nos permitirá */ message: "Selecciona una opción:",
+        /* seleccionar */ type: "select",
+        /* una opción */ name: "opción",
+        /* entre las opciones disponibles. */ choices: opciones_para_menu } )
+
+    /* Si queremos, podemos cancelar y salir del menú. */ if (!respuesta.opción) { console.log("Operación cancelada"); process.exit(0) }
+    /* Y si se elige una opción, podemos continuar. */ opciones_elegidas = [`--${respuesta.opción}`] }
+
+/* Si no usamos el menú y se elige manualmente una opción */ if (!Object.keys(opciones_disponibles)
+    /* que no está entre las opciones disponibles, */ .includes(opciones_elegidas[0].substring(2))) {
     /* mostramos un mensaje de error. */ console.error("Opción no reconocida:", opciones_elegidas[0]); process.exit(1) }
 /*
 [ Crear un historial ]
@@ -58,6 +68,7 @@ import { join } from "node:path"
     /* Dando por hecho que recibimos la lista correctamente, */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
     /* hacemos la siguiente traducción */ texto = texto.replace(
         "Changes to be committed:", "Cambios revisados:").replace(
+        "Changes not staged for commit:", "Cambios sin revisar:").replace(
         "Untracked files:", "Cambios sin revisar:")
 
     /* Estando traducida, la mostramos. */ process.stdout.write(texto); process.exit(git.status ?? 0)
@@ -108,6 +119,20 @@ import { join } from "node:path"
         /* Habiendo actualizado la portada, la agregamos a los cambios revisados. */ ejecutar("git", ["add", "README.md"]) }
 
     /* Teniendo ya la fecha y número de esta nueva revisión, le pedimos a Git que la guarde. */const git = ejecutar("git", ["commit", "-m", revisión])
+
+    /* El mensaje que nos devuelva Git */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
+    /* lo mostramos tal cual como Git nos lo da. */ process.stdout.write(texto); process.exit(git.status ?? 0)
+/*
+[ Enviar revisiones al servidor ]
+*/
+/* Si queremos enviar las revisiones al servidor, */ } else if (opciones_elegidas.includes("--enviar-revisiones-al-servidor")) {
+    /* primero verificamos que esté configurada la ubicación del servidor. */ const verificar_remoto = ejecutar("git", ["remote", "get-url", "origin"], { encoding: "utf8" })
+
+    /* Si no está configurada, */ if (verificar_remoto.error || (verificar_remoto.status ?? 0) !== 0) {
+        /* lo notificamos */ console.error("No está configurada la ubicación del servidor")
+        /* e indicamos cómo configurarla. */ console.error("Ejecuta: git remote add origin <URL>"); process.exit(1) }
+
+    /* Si ya está configurada, enviamos las revisiones. */ const git = ejecutar("git", ["push", "-u", "origin", "main"])
 
     /* El mensaje que nos devuelva Git */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
     /* lo mostramos tal cual como Git nos lo da. */ process.stdout.write(texto); process.exit(git.status ?? 0) }
