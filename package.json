@@ -1,17 +1,17 @@
 {
   "name": "administrador-de-historiales-de-cambios",
-  "version": "2026.2.16-1",
+  "version": "2026.2.16-2",
   "type": "module",
   "bin": {
     "historial-de-cambios": "./bin/administrador-de-historiales-de-cambios.js"
   },
-    "scripts": {
-        "formatear": "eslint-autocontenido --fix ."
-    },
-    "devDependencies": {
-        "eslint-autocontenido": "github:lovedder1995/eslint-autocontenido#2026.02.03.5",
-        "eslint-js-autocontenido": "github:lovedder1995/eslint-js-autocontenido#2026.02.03.2",
-        "globals": "^17.3.0",
-        "stylistic-eslint-plugin-autocontenido": "github:lovedder1995/stylistic-eslint-plugin-autocontenido#2026.02.04.2"
-    }
+  "scripts": {
+    "formatear": "eslint-autocontenido --fix ."
+  },
+  "devDependencies": {
+    "eslint-autocontenido": "github:lovedder1995/eslint-autocontenido#2026.02.03.5",
+    "eslint-js-autocontenido": "github:lovedder1995/eslint-js-autocontenido#2026.02.03.2",
+    "globals": "^17.3.0",
+    "stylistic-eslint-plugin-autocontenido": "github:lovedder1995/stylistic-eslint-plugin-autocontenido#2026.02.04.2"
+  }
 }

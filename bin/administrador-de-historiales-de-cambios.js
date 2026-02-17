@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 import { spawnSync as ejecutar } from "child_process"
+import { readFileSync, writeFileSync, existsSync } from "node:fs"
+import { join } from "node:path"
 /*
 =========================================
 = Administrador de historial de cambios =
@@ -12,7 +14,7 @@ import { spawnSync as ejecutar } from "child_process"
 /* Antes que nada, le preguntamos a Git */ const git = ejecutar("git", ["rev-parse", "--is-inside-work-tree"], { encoding: "utf8" })
 /* si existe un historial de cambios en la carpeta. */ const existe_un_historial = !git.error && (git.status ?? 0) === 0 && String(git.stdout || "").trim() === "true"
 
-/* Si nos dice que no existe, */  if (!existe_un_historial) {
+/* Si no existe, */  if (!existe_un_historial) {
     /* lo notificamos */ console.error("No hay un historial de cambios en esta carpeta")
     /* e indicamos cómo crear uno. */ console.error("Ejecuta: historial-de-cambios --crear"); process.exit(1) }
 /*
@@ -88,7 +90,16 @@ import { spawnSync as ejecutar } from "child_process"
             /* Si no es de hoy, */} else {
             /* la nueva revisión tendrá la fecha de hoy y empezará en 1. */ revisión = `${fecha}-1`  } }
 
+    /* Si hay un manifiesto */ const ruta_paquete = join(process.cwd(), "package.json")
+    /* de paquete de JavaScript, */ if (existsSync(ruta_paquete)) {
+        /* lo leemos, */ const contenido = readFileSync(ruta_paquete, "utf8")
+        /* hacemos que */ const manifiesto = JSON.parse(contenido)
+        /* su «versión» coincida con la revisión */ manifiesto.version = revisión
+        /* y guardamos los cambios. */ writeFileSync(ruta_paquete, `${JSON.stringify(manifiesto, null, 2)}\n`, "utf8")
+
+        /* Habiendo actualizado el manifiesto, lo agregamos a los cambios revisados. */ ejecutar("git", ["add", "package.json"]) }
+
     /* Teniendo ya la fecha y número de esta nueva revisión, le pedimos a Git que la guarde. */const git = ejecutar("git", ["commit", "-m", revisión])
 
     /* El mensaje que nos devuelva Git */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
-    /* lo mostramos tal cual. */ process.stdout.write(texto); process.exit(git.status ?? 0) }
+    /* lo mostramos tal cual como Git nos lo da. */ process.stdout.write(texto); process.exit(git.status ?? 0) }
