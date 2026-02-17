@@ -108,7 +108,8 @@ import prompts from "prompts"
         /* su «versión» coincida con la revisión */ manifiesto.version = revisión
         /* y guardamos los cambios. */ writeFileSync(ruta_paquete, `${JSON.stringify(manifiesto, null, 2)}\n`, "utf8")
 
-        /* Habiendo actualizado el manifiesto, lo agregamos a los cambios revisados. */ ejecutar("git", ["add", "package.json"]) }
+        /* También actualizamos la revisión en el árbol de dependencias */ ejecutar("npm", ["install"])
+        /* Habiendo actualizado el manifiesto y el árbol de dependencias, los agregamos a los cambios revisados. */ ejecutar("git", ["add", "package.json", "package-lock.json"]) }
 
     /* Si hay */ const ruta_portada = join(process.cwd(), "PORTADA.md")
     /* una portada, */ if (existsSync(ruta_portada)) {
