@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  publicar-revisión:
+  publicar-revision:
     runs-on: ubuntu-latest
     permissions:
       contents: write
