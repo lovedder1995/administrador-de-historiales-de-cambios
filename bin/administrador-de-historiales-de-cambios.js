@@ -8,30 +8,18 @@ import prompts from "prompts"
 = Administrador de historial de cambios =
 =========================================
 */
-/*
---------------------------------------------------------------
-- Verificar que exista un historial de cambios en la carpeta -
---------------------------------------------------------------
-*/
-/* Antes que nada, le preguntamos a Git */ const git = ejecutar("git", ["rev-parse", "--is-inside-work-tree"], { encoding: "utf8" })
-/* si existe un historial de cambios en la carpeta. */ const existe_un_historial = !git.error && (git.status ?? 0) === 0 && String(git.stdout || "").trim() === "true"
-
-/* Si no existe, */  if (!existe_un_historial) {
-    /* lo notificamos */ console.error("No hay un historial de cambios en esta carpeta")
-    /* e indicamos cómo crear uno. */ console.error("Ejecuta: historial-de-cambios --crear"); process.exit(1) }
-/*
-------------
-- Opciones -
-------------
-*/
 /* Podemos elegir entre */ let opciones_elegidas = process.argv.slice(2)
-/* las siguientes opciones: */const opciones_disponibles = {
+/* las siguientes opciones manualmente: */const opciones_disponibles = {
     "lista-de-cambios": "git status",
     "confirmar-la-revisión-de-todos-los-cambios": "git add .",
     "guardar-revisión": "git commit -m <REVISIÓN>",
     "enviar-revisiones-al-servidor": "git push -u origin main",
     "crear-un-historial": "git init" }
-
+/*
+--------
+- Menú -
+--------
+*/
 /* Si no se elige ninguna, */ if (opciones_elegidas.length === 0) {
     /* vamos a mostrar */ const opciones_para_menu = Object.entries(opciones_disponibles).map(([opción, descripción]) => ({
         /* un menú */ title: `${opción.padEnd(Math.max(...Object.keys(opciones_disponibles).map(opción => opción.length)))}  ${descripción}`,
@@ -49,6 +37,23 @@ import prompts from "prompts"
 /* Si no usamos el menú y se elige manualmente una opción */ if (!Object.keys(opciones_disponibles)
     /* que no está entre las opciones disponibles, */ .includes(opciones_elegidas[0].substring(2))) {
     /* mostramos un mensaje de error. */ console.error("Opción no reconocida:", opciones_elegidas[0]); process.exit(1) }
+/*
+--------------------------------------------------------------
+- Verificar que exista un historial de cambios en la carpeta -
+--------------------------------------------------------------
+*/
+/* Para usar una opción (con la excepión de la opción para crear un historial), */ if (!opciones_elegidas.includes("--crear-un-historial")) {
+    /* le debemos preguntar a Git */ const git = ejecutar("git", ["rev-parse", "--is-inside-work-tree"], { encoding: "utf8" })
+    /* si existe un historial de cambios en la carpeta. */ const existe_un_historial = !git.error && (git.status ?? 0) === 0 && String(git.stdout || "").trim() === "true"
+
+    /* Si no existe, */  if (!existe_un_historial) {
+        /* lo notificamos */ console.error("No hay un historial de cambios en esta carpeta")
+        /* e indicamos cómo crear uno. */ console.error("Ejecuta: historial-de-cambios --crear-un-historial"); process.exit(1) } }
+/*
+------------
+- Opciones -
+------------
+*/
 /*
 [ Crear un historial ]
 */
