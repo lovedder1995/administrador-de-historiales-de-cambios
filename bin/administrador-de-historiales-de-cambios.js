@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 import { spawnSync as ejecutar } from "child_process"
 import { readFileSync, writeFileSync, existsSync } from "node:fs"
-import { join } from "node:path"
+import { join, dirname } from "node:path"
+import { fileURLToPath } from "node:url"
 import prompts from "prompts"
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 /*
 =========================================
 = Administrador de historial de cambios =
@@ -15,6 +18,7 @@ import prompts from "prompts"
     "guardar-revisión": "git commit -m <REVISIÓN>",
     "enviar-revisiones-al-servidor": "git push -u origin main",
     "crear-un-historial": "git init",
+    "última-revisión": "",
     "última-revisión-del-administrador-de-historiales": "" }
 /*
 --------
@@ -155,8 +159,14 @@ import prompts from "prompts"
         /* al español */"No hay revisiones para enviar")
     /* antes de mostrarlo. */ process.stdout.write(mensaje_esperado_o_de_error); process.exit(mensaje_esperado_o_de_error.status ?? 0)
 /*
+[ Última revisión ]
+*/
+/* Si queremos ver la última revisión del proyecto actual, */ } else if (opciones_elegidas.includes("--última-revisión")) {
+    /* la leemos desde el manifiesto del proyecto actual */ const ruta_paquete = join(process.cwd(), "package.json")
+    /* y la mostramos. */ console.log((JSON.parse(readFileSync(ruta_paquete, "utf8"))).version); process.exit(0)
+/*
 [ Última revisión del administrador de historiales ]
 */
 /* Si queremos ver la última revisión del administrador de historiales, */ } else if (opciones_elegidas.includes("--última-revisión-del-administrador-de-historiales")) {
-    /* leemos el manifiesto del administrador de historiales */ const ruta_paquete = join(process.cwd(), "package.json")
+    /* la leemos desde el manifiesto del administrador de historiales */ const ruta_paquete = join(__dirname, "..", "package.json")
     /* y la mostramos. */ console.log((JSON.parse(readFileSync(ruta_paquete, "utf8"))).version); process.exit(0) }
