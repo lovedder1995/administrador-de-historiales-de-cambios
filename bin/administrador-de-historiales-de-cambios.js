@@ -60,12 +60,11 @@ import prompts from "prompts"
 /* Si queremos crear un historial, */ if (opciones_elegidas.includes("--crear-un-historial")) {
     /* se lo pedimos a Git. */ const git = ejecutar("git", ["init"])
 
-    /* Al crear el historial, Git nos va a mostrar */ let mensaje_esperado_o_de_error = (git.stdout?.toString("utf8") || "") + (git.stderr?.toString("utf8") || "")
-    /* un mensaje en inglés. */ let mensaje = mensaje_esperado_o_de_error?.toString("utf8") || ""
-    /* Dando por hecho que nos va a mostrar un mensaje de éxito, hay que */ mensaje = mensaje.replace(
+    /* Al crear el historial, Git nos va a mostrar un mensaje en inglés. */ let mensaje_esperado_o_de_error = (git.stdout?.toString("utf8") || "") + (git.stderr?.toString("utf8") || "")
+    /* Dando por hecho que nos va a mostrar un mensaje de éxito, hay que */ mensaje_esperado_o_de_error = mensaje_esperado_o_de_error.replace(
     /* traducirlo */ "Initialized empty Git repository in",
         /* al español */"Se inició un historial de cambios en")
-    /* antes de mostrarlo. */ process.stdout.write(mensaje); process.exit(git.status ?? 0)
+    /* antes de mostrarlo. */ process.stdout.write(mensaje_esperado_o_de_error); process.exit(git.status ?? 0)
 /*
 [ Lista de cambios ]
 */
@@ -149,5 +148,8 @@ import prompts from "prompts"
 
     /* Si ya está configurada, enviamos las revisiones. */ const git = ejecutar("git", ["push", "-u", "origin", "main"])
 
-    /* El mensaje que nos devuelva Git */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
-    /* lo mostramos tal cual como Git nos lo da. */ process.stdout.write(texto); process.exit(git.status ?? 0) }
+    /* Al enviar las revisiones, Git nos va a mostrar un mensaje en inglés. */ let mensaje_esperado_o_de_error = (git.stdout?.toString("utf8") || "") + (git.stderr?.toString("utf8") || "")
+    /* Hay que */ mensaje_esperado_o_de_error = mensaje_esperado_o_de_error.replace(
+    /* traducirlo */ "Everything up-to-date",
+        /* al español */"No hay revisiones para enviar")
+    /* antes de mostrarlo. */ process.stdout.write(mensaje_esperado_o_de_error); process.exit(mensaje_esperado_o_de_error.status ?? 0) }
