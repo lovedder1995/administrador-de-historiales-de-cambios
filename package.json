@@ -1,14 +1,11 @@
 {
   "name": "administrador-de-historiales-de-cambios",
-  "version": "2026.2.17-11",
+  "version": "2026.2.17-12",
   "type": "module",
   "bin": {
     "historial-de-cambios": "./bin/administrador-de-historiales-de-cambios.js"
   },
   "dependencies": {
     "prompts": "^2.4.2"
-  },
-  "devDependencies": {
-    "formatear": "github:lovedder1995/formatear#2026.2.17-1"
   }
 }
