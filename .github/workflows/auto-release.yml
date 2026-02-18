@@ -18,15 +18,15 @@ jobs:
           fetch-depth: 0
       
       - name: Obtener la última revisión
-        id: revisión
+        id: revision
         run: |
-          echo "revisión=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+          echo "revision=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
       
       - name: Publicar revisión
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.revisión.outputs.revisión }}
+          tag_name: ${{ steps.revision.outputs.revision }}
           draft: false
           prerelease: false
