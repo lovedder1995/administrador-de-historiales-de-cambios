@@ -14,7 +14,8 @@ import prompts from "prompts"
     "confirmar-la-revisión-de-todos-los-cambios": "git add .",
     "guardar-revisión": "git commit -m <REVISIÓN>",
     "enviar-revisiones-al-servidor": "git push -u origin main",
-    "crear-un-historial": "git init" }
+    "crear-un-historial": "git init",
+    "última-revisión-del-administrador-de-historiales": "" }
 /*
 --------
 - Menú -
@@ -152,4 +153,10 @@ import prompts from "prompts"
     /* Hay que */ mensaje_esperado_o_de_error = mensaje_esperado_o_de_error.replace(
     /* traducirlo */ "Everything up-to-date",
         /* al español */"No hay revisiones para enviar")
-    /* antes de mostrarlo. */ process.stdout.write(mensaje_esperado_o_de_error); process.exit(mensaje_esperado_o_de_error.status ?? 0) }
+    /* antes de mostrarlo. */ process.stdout.write(mensaje_esperado_o_de_error); process.exit(mensaje_esperado_o_de_error.status ?? 0)
+/*
+[ Última revisión del administrador de historiales ]
+*/
+/* Si queremos ver la última revisión del administrador de historiales, */ } else if (opciones_elegidas.includes("--última-revisión-del-administrador-de-historiales")) {
+    /* leemos el manifiesto del administrador de historiales */ const ruta_paquete = join(process.cwd(), "package.json")
+    /* y la mostramos. */ console.log((JSON.parse(readFileSync(ruta_paquete, "utf8"))).version); process.exit(0) }
