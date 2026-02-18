@@ -1,0 +1,32 @@
+name: Publicar revisión
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publicar-revisión:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Obtener el historial de cambios
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Obtener la última revisión
+        id: revisión
+        run: |
+          echo "revisión=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+      
+      - name: Publicar revisión
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.revisión.outputs.revisión }}
+          draft: false
+          prerelease: false
