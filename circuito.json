@@ -3,7 +3,12 @@
         "sector": "#Administrador_de_historiales_de_cambios",
         "nodos": [
             {
-                "sector": "#Menú",
+                "sector": {
+                    "conexión": [
+                        "#Menú",
+                        ".prompts"
+                    ]
+                },
                 "nodos": [
                     "#Lista_de_cambios",
                     "#Confirmar_la_revisión_de_todos_los_cambios",
