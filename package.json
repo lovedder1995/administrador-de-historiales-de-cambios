@@ -1,6 +1,6 @@
 {
   "name": "administrador-de-historiales-de-cambios",
-  "version": "2026.3.14-3",
+  "version": "2026.3.14-4",
   "type": "module",
   "bin": {
     "historial-de-cambios": "Administrador_de_historiales_de_cambios.js"

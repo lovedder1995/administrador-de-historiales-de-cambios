@@ -152,8 +152,8 @@ const Opciones_disponibles = {
 ------------------------------
 */
 /*
-| #Verificar_que_exista_un_historial_de_cambios_en_la_carpeta (condicional) Verificar que exista un historial de cambios en la carpeta
-[ Verificar que exista un historial de cambios en la carpeta ]
+| #No_hay_un_historial_de_cambios_en_la_carpeta (condicional) No hay un historial de cambios en la carpeta
+[ No hay un historial de cambios en la carpeta ]
 */
 /* Para usar una opción (con la excepión de la opción para crear un historial), */ if (elección.opción !== "Crear un historial") {
     /* le debemos preguntar a Git */ const git = ejecutar("git", ["rev-parse", "--is-inside-work-tree"], { encoding: "utf8" })
