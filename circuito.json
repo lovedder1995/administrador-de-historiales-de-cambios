@@ -1,0 +1,26 @@
+[
+    {
+        "sector": "#Administrador_de_historiales_de_cambios",
+        "nodos": [
+            {
+                "sector": "#Menú",
+                "nodos": [
+                    "#Lista_de_cambios",
+                    "#Confirmar_la_revisión_de_todos_los_cambios",
+                    "#Guardar_revisión",
+                    "#Enviar_revisiones_al_servidor",
+                    "#Crear_un_historial",
+                    "#Última_revisión",
+                    "#Última_revisión_del_administrador_de_historiales"
+                ]
+            },
+            {
+                "sector": "#Ejecutar_la_opción_elegida",
+                "nodos": [
+                    "#Verificar_que_exista_un_historial_de_cambios_en_la_carpeta",
+                    "#Ejecutar"
+                ]
+            }
+        ]
+    }
+]

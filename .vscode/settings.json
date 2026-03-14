@@ -23,6 +23,13 @@
             "underline": false,
             "backgroundColor": "#C586C022",
             "bold": true
+        },
+        {
+            "tag": "|",
+            "color": "#90c586",
+            "strikethrough": false,
+            "underline": false,
+            "bold": true
         }
     ]
 }
