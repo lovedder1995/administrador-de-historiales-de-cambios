@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 import { spawnSync as ejecutar } from "child_process"
 import { readFileSync, writeFileSync, existsSync } from "node:fs"
-import { join, dirname } from "node:path"
-import { fileURLToPath } from "node:url"
+import { join } from "node:path"
 import prompts from "prompts"
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 /*
 | #Administrador_de_historiales_de_cambios Administrador de historiales de cambios
 ===========================================
@@ -131,17 +128,10 @@ const Opciones_disponibles = {
     */
     "Última revisión": () => {
     /* Leemos el manifiesto del proyecto actual */ const ruta_paquete = join(process.cwd(), "package.json")
-        /* y mostramos su «versión». */ console.log((JSON.parse(readFileSync(ruta_paquete, "utf8"))).version); process.exit(0)},
-    /*
-    | #Última_revisión_del_administrador_de_historiales (condicional) Última revisión del administrador de historiales
-    [ Última revisión del administrador de historiales ]
-    */
-    "Última revisión del administrador de historiales": () => {
-    /* Leemos el manifiesto del administrador de historiales */ const ruta_paquete = join(__dirname, "..", "package.json")
         /* y mostramos su «versión». */ console.log((JSON.parse(readFileSync(ruta_paquete, "utf8"))).version); process.exit(0) } }
 
 /* El menú */ const elección = await prompts([
-    /* nos permitirá */ { message: "Selecciona una opción para compilar:",
+    /* nos permitirá */ { message: "Selecciona una opción:",
         /* seleccionar */ type: "select",
         /* una opción */ name: "opción",
         /* entre las opciones disponibles: */ choices: Object.keys(Opciones_disponibles).map(opción => ({ title: opción, value: opción } ) ) } ] ); if (!elección.opción) process.exit(0)
