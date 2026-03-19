@@ -136,7 +136,7 @@ const Opciones_disponibles = {
         /* una opción */ name: "opción",
         /* entre las opciones disponibles: */ choices: Object.keys(Opciones_disponibles).map(opción => ({ title: opción, value: opción } ) ) } ] ); if (!elección.opción) process.exit(0)
 /*
-| #Ejecutar_la_opción_elegida Ejecutar la opción elegida
+| #Ejecutar_la_opción_elegida (pendiente) Ejecutar la opción elegida
 ------------------------------
 - Ejecutar la opción elegida -
 ------------------------------
