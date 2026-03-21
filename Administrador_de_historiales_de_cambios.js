@@ -10,14 +10,13 @@ import prompts from "prompts"
 ===========================================
 */
 /*
-| #Menú Menú
 --------
 - Menú -
 --------
 */
 const Opciones_disponibles = {
     /*
-    | #Lista_de_cambios (condicional) Lista de cambios
+    | #Lista_de_cambios (condicional visible) Lista de cambios
     [ Lista de cambios ]
     */
     "Lista de cambios": () => {
@@ -31,7 +30,7 @@ const Opciones_disponibles = {
 
         /* Estando traducida, la mostramos. */ process.stdout.write(texto); process.exit(git.status ?? 0)},
     /*
-    | #Confirmar_la_revisión_de_todos_los_cambios (condicional) Confirmar la revisión de todos los cambios
+    | #Confirmar_la_revisión_de_todos_los_cambios (condicional visible) Confirmar la revisión de todos los cambios
     [ Confirmar la revisión de todos los cambios ]
     */
     "Confirmar la revisión de todos los cambios": () => {
@@ -40,7 +39,7 @@ const Opciones_disponibles = {
         /* El mensaje que nos devuelva Git */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
         /* lo mostramos tal cual como Git nos lo da. */ process.stdout.write(texto); process.exit(git.status ?? 0)},
     /*
-    | #Guardar_revisión (condicional) Guardar revisión
+    | #Guardar_revisión (condicional visible) Guardar revisión
     [ Guardar revisión ]
     */
     "Guardar revisión": () => {
@@ -92,7 +91,7 @@ const Opciones_disponibles = {
         /* El mensaje que nos devuelva Git */ let texto = ((git.stdout && git.stdout.toString("utf8")) || "") + ((git.stderr && git.stderr.toString("utf8")) || "")
         /* lo mostramos tal cual como Git nos lo da. */ process.stdout.write(texto); process.exit(git.status ?? 0)},
     /*
-    | #Enviar_revisiones_al_servidor (condicional) Enviar revisiones al servidor
+    | #Enviar_revisiones_al_servidor (condicional visible) Enviar revisiones al servidor
     [ Enviar revisiones al servidor ]
     */
     "Enviar revisiones al servidor": () => {
@@ -111,7 +110,7 @@ const Opciones_disponibles = {
             /* al español */"No hay revisiones para enviar")
         /* antes de mostrarlo. */ process.stdout.write(mensaje_esperado_o_de_error); process.exit(mensaje_esperado_o_de_error.status ?? 0)},
     /*
-    | #Crear_un_historial (condicional) Crear un historial
+    | #Crear_un_historial (condicional visible) Crear un historial
     [ Crear un historial ]
     */
     "Crear un historial": () => {
@@ -123,13 +122,15 @@ const Opciones_disponibles = {
             /* al español */"Se inició un historial de cambios en")
         /* antes de mostrarlo. */ process.stdout.write(mensaje_esperado_o_de_error); process.exit(git.status ?? 0)},
     /*
-    | #Última_revisión (condicional) Última revisión
+    | #Última_revisión (condicional visible) Última revisión
     [ Última revisión ]
     */
     "Última revisión": () => {
     /* Leemos el manifiesto del proyecto actual */ const ruta_paquete = join(process.cwd(), "package.json")
         /* y mostramos su «versión». */ console.log((JSON.parse(readFileSync(ruta_paquete, "utf8"))).version); process.exit(0) } }
-
+/*
+| #Menú (visible) 📝 Menú
+*/
 /* El menú */ const elección = await prompts([
     /* nos permitirá */ { message: "Selecciona una opción:",
         /* seleccionar */ type: "select",
@@ -142,7 +143,7 @@ const Opciones_disponibles = {
 ------------------------------
 */
 /*
-| #No_hay_un_historial_de_cambios_en_la_carpeta (condicional) No hay un historial de cambios en la carpeta
+| #No_hay_un_historial_de_cambios_en_la_carpeta (condicional) ❌ No hay un historial de cambios en la carpeta
 [ No hay un historial de cambios en la carpeta ]
 */
 /* Para usar una opción (con la excepión de la opción para crear un historial), */ if (elección.opción !== "Crear un historial") {

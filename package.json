@@ -1,6 +1,6 @@
 {
   "name": "administrador-de-historiales-de-cambios",
-  "version": "2026.3.19-1",
+  "version": "2026.3.20-1",
   "type": "module",
   "bin": {
     "historial-de-cambios": "Administrador_de_historiales_de_cambios.js"
@@ -9,7 +9,7 @@
     "generar-circuito": "node -e \"import('generador-de-circuitos').then(module => module.default())\""
   },
   "devDependencies": {
-    "generador-de-circuitos": "github:lovedder1995/generador-de-circuitos#2026.3.19-1"
+    "generador-de-circuitos": "github:lovedder1995/generador-de-circuitos#2026.3.20-1"
   },
   "dependencies": {
     "prompts": "^2.4.2"
